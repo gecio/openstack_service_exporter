@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	th "github.com/gophercloud/gophercloud/testhelper"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 	"github.com/innovocloud/gophercloud_extensions/openstack/networking/v2/agents"
+	osTime "github.com/innovocloud/gophercloud_extensions/openstack/time"
 )
 
 const agentListBody = `
@@ -99,6 +101,7 @@ var (
 		Topic:            "N/A",
 		Host:             "DE-IX-001-02-02-13-7",
 		AgentType:        "Open vSwitch agent",
+		Heartbeat:        osTime.OpenStackTime{Time: time.Date(2017, 10, 9, 13, 24, 53, 0, time.UTC)},
 	}
 	metadataAgent = agents.Agent{
 		ID:               "0b4d3a07-b680-40da-88a3-8de99fd34100",
@@ -110,6 +113,7 @@ var (
 		Topic:            "N/A",
 		Host:             "DE-IX-001-02-02-01-6",
 		AgentType:        "Metadata agent",
+		Heartbeat:        osTime.OpenStackTime{Time: time.Date(2017, 10, 9, 13, 25, 12, 0, time.UTC)},
 	}
 )
 

@@ -3,6 +3,7 @@ package services
 import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
+	osTime "github.com/innovocloud/gophercloud_extensions/openstack/time"
 )
 
 // ServicePage abstracts the raw results of making a List() request against
@@ -15,14 +16,15 @@ type ServicePage struct {
 
 // Service represents a orchestration service in the OpenStack cloud.
 type Service struct {
-	ID             string `json:"id"`
-	EngineID       string `json:"engine_id"`
-	Status         string `json:"status"`
-	Binary         string `json:"binary"`
-	Host           string `json:"host"`
-	Hostname       string `json:"hostname"`
-	Topic          string `json:"topic"`
-	ReportInterval int    `json:"report_interval"`
+	ID             string               `json:"id"`
+	EngineID       string               `json:"engine_id"`
+	Status         string               `json:"status"`
+	Binary         string               `json:"binary"`
+	Host           string               `json:"host"`
+	Hostname       string               `json:"hostname"`
+	Topic          string               `json:"topic"`
+	ReportInterval int                  `json:"report_interval"`
+	Updated        osTime.OpenStackTime `json:"updated_at"`
 }
 
 // IsEmpty returns true if a page contains no Services results.

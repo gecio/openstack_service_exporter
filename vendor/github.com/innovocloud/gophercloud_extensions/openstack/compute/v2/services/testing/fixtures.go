@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	th "github.com/gophercloud/gophercloud/testhelper"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 	"github.com/innovocloud/gophercloud_extensions/openstack/compute/v2/services"
+	osTime "github.com/innovocloud/gophercloud_extensions/openstack/time"
 )
 
 const serviceListBody = `
@@ -66,7 +68,7 @@ var (
 		Zone:           "ix1",
 		State:          "up",
 		DisabledReason: "",
-		Updated:        "2017-10-09T13:06:14.000000",
+		Updated:        osTime.OpenStackTime{Time: time.Date(2017, 10, 9, 13, 06, 14, 0, time.UTC)},
 	}
 
 	novaConductor = services.Service{
@@ -77,7 +79,7 @@ var (
 		Zone:           "internal",
 		State:          "up",
 		DisabledReason: "",
-		Updated:        "2017-10-09T13:06:16.000000",
+		Updated:        osTime.OpenStackTime{Time: time.Date(2017, 10, 9, 13, 06, 16, 0, time.UTC)},
 	}
 
 	novaConsoleAuth = services.Service{
@@ -88,7 +90,7 @@ var (
 		Zone:           "internal",
 		State:          "up",
 		DisabledReason: "",
-		Updated:        "2017-10-09T13:06:17.000000",
+		Updated:        osTime.OpenStackTime{Time: time.Date(2017, 10, 9, 13, 06, 17, 0, time.UTC)},
 	}
 
 	novaScheduler = services.Service{
@@ -99,7 +101,7 @@ var (
 		Zone:           "internal",
 		State:          "up",
 		DisabledReason: "",
-		Updated:        "2017-10-09T13:06:16.000000",
+		Updated:        osTime.OpenStackTime{Time: time.Date(2017, 10, 9, 13, 06, 16, 0, time.UTC)},
 	}
 )
 

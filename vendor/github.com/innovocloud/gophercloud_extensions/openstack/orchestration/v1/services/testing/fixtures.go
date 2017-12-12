@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	th "github.com/gophercloud/gophercloud/testhelper"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 	"github.com/innovocloud/gophercloud_extensions/openstack/orchestration/v1/services"
+	osTime "github.com/innovocloud/gophercloud_extensions/openstack/time"
 )
 
 const serviceListBody = `
@@ -54,6 +56,7 @@ var (
 		Host:           "DE-IX-001-02-02-01-2",
 		Hostname:       "DE-IX-001-02-02-01-2",
 		Topic:          "engine",
+		Updated:        osTime.OpenStackTime{Time: time.Date(2017, 10, 6, 10, 50, 03, 0, time.UTC)},
 	}
 
 	heatEngine2 = services.Service{
@@ -65,6 +68,7 @@ var (
 		Host:           "DE-ES-001-03-09-01-1",
 		Hostname:       "DE-ES-001-03-09-01-1",
 		Topic:          "engine",
+		Updated:        osTime.OpenStackTime{Time: time.Date(2017, 10, 9, 14, 49, 52, 0, time.UTC)},
 	}
 )
 

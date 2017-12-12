@@ -33,8 +33,8 @@
 [[projects]]
   branch = "master"
   name = "github.com/innovocloud/gophercloud_extensions"
-  packages = ["openstack/blockstorage/v2/services","openstack/compute/v2/services","openstack/networking/v2/agents","openstack/orchestration/v1/services"]
-  revision = "0b88fdfe17af5680731ec1a22a9b3ad491e8b4d2"
+  packages = ["openstack/blockstorage/v2/services","openstack/compute/v2/services","openstack/networking/v2/agents","openstack/orchestration/v1/services","openstack/time"]
+  revision = "f9caf7615a17303ca96e0369448f3d9aeee9c901"
 
 [[projects]]
   name = "github.com/matttproud/golang_protobuf_extensions"
