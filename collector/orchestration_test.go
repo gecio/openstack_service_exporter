@@ -24,8 +24,16 @@ func TestOrchestrationUpdate(t *testing.T) {
 			want: prometheus.MustNewConstMetric(orchestrationUpDesc, prometheus.GaugeValue, 0, "06529f29-a258-4eb1-8966-61141c3f0c68", "heat-engine", "DE-IX-001-02-02-01-2", "1ab44a4a-c62b-476a-96a8-a3e4525eb1c0", "engine"),
 		},
 		{
+			desc: "Last seen of heat-engine down",
+			want: prometheus.MustNewConstMetric(orchestrationLastSeenDesc, prometheus.CounterValue, 1507287003, "06529f29-a258-4eb1-8966-61141c3f0c68", "heat-engine", "DE-IX-001-02-02-01-2", "1ab44a4a-c62b-476a-96a8-a3e4525eb1c0", "engine"),
+		},
+		{
 			desc: "heat-engine up",
 			want: prometheus.MustNewConstMetric(orchestrationUpDesc, prometheus.GaugeValue, 1, "07040a0c-bb75-437f-a59c-7ff9c92ef833", "heat-engine", "DE-ES-001-03-09-01-1", "3ed4082d-fdc2-442c-b920-627566993626", "engine"),
+		},
+		{
+			desc: "Last seen of heat-engine up",
+			want: prometheus.MustNewConstMetric(orchestrationLastSeenDesc, prometheus.CounterValue, 1507560592, "07040a0c-bb75-437f-a59c-7ff9c92ef833", "heat-engine", "DE-ES-001-03-09-01-1", "3ed4082d-fdc2-442c-b920-627566993626", "engine"),
 		},
 	}
 

@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	th "github.com/gophercloud/gophercloud/testhelper"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 	"github.com/innovocloud/gophercloud_extensions/openstack/blockstorage/v2/services"
+	osTime "github.com/innovocloud/gophercloud_extensions/openstack/time"
 )
 
 const serviceListBody = `
@@ -43,7 +45,7 @@ var (
 		Zone:           "nova",
 		State:          "up",
 		DisabledReason: "",
-		Updated:        "2017-10-09T13:53:33.000000",
+		Updated:        osTime.OpenStackTime{Time: time.Date(2017, 10, 9, 13, 53, 33, 0, time.UTC)},
 	}
 
 	cinderScheduler2 = services.Service{
@@ -53,7 +55,7 @@ var (
 		Zone:           "nova",
 		State:          "up",
 		DisabledReason: "",
-		Updated:        "2017-10-09T13:53:28.000000",
+		Updated:        osTime.OpenStackTime{Time: time.Date(2017, 10, 9, 13, 53, 28, 0, time.UTC)},
 	}
 )
 

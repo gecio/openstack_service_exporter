@@ -15,7 +15,7 @@ func TestListAgents(t *testing.T) {
 	handleAgentListSuccessfully(t)
 
 	pages := 0
-	err := agents.List(client.ServiceClient()).EachPage(func(page pagination.Page) (bool, error) {
+	err := agents.List(client.ServiceClient(), nil).EachPage(func(page pagination.Page) (bool, error) {
 		pages++
 
 		actual, err := agents.ExtractAgents(page)

@@ -16,6 +16,11 @@ var (
 		"Status of orchestration services",
 		[]string{"id", "binary", "service_host", "engine_id", "topic"}, nil,
 	)
+	orchestrationLastSeenDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "orchestration", "last_seen"),
+		"Last time the service was seen by OpenStack",
+		[]string{"id", "binary", "service_host", "engine_id", "topic"}, nil,
+	)
 )
 
 func init() {
@@ -36,6 +41,7 @@ type orchestrationCollector struct {
 
 func (c orchestrationCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- orchestrationUpDesc
+	ch <- orchestrationLastSeenDesc
 }
 
 func (c orchestrationCollector) Update(ch chan<- prometheus.Metric) error {
@@ -56,6 +62,7 @@ func (c orchestrationCollector) Update(ch chan<- prometheus.Metric) error {
 				state = 1
 			}
 			ch <- prometheus.MustNewConstMetric(orchestrationUpDesc, prometheus.GaugeValue, state, service.ID, service.Binary, service.Host, service.EngineID, service.Topic)
+			ch <- prometheus.MustNewConstMetric(orchestrationLastSeenDesc, prometheus.CounterValue, float64(service.Updated.Unix()), service.ID, service.Binary, service.Host, service.EngineID, service.Topic)
 		}
 
 		return true, nil
