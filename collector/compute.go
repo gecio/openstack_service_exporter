@@ -22,6 +22,11 @@ var (
 		"Admin status of compute services",
 		[]string{"id", "binary", "service_host", "zone"}, nil,
 	)
+	computeLastSeenDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "compute", "last_seen"),
+		"Last time the service was seen by OpenStack",
+		[]string{"id", "binary", "service_host", "zone"}, nil,
+	)
 )
 
 func init() {
@@ -67,8 +72,10 @@ func (c computeCollector) Update(ch chan<- prometheus.Metric) error {
 			if service.Status == "enabled" {
 				enabled = 1
 			}
+
 			ch <- prometheus.MustNewConstMetric(computeUpDesc, prometheus.GaugeValue, state, strconv.Itoa(service.ID), service.Binary, service.Host, service.Zone)
 			ch <- prometheus.MustNewConstMetric(computeEnabledDesc, prometheus.GaugeValue, enabled, strconv.Itoa(service.ID), service.Binary, service.Host, service.Zone)
+			ch <- prometheus.MustNewConstMetric(computeLastSeenDesc, prometheus.CounterValue, float64(service.Updated.Unix()), strconv.Itoa(service.ID), service.Binary, service.Host, service.Zone)
 		}
 
 		return true, nil

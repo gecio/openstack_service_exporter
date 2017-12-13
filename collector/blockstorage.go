@@ -21,6 +21,11 @@ var (
 		"Admin status of blockstorage services",
 		[]string{"binary", "service_host", "zone"}, nil,
 	)
+	blockstorageLastSeenDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "blockstorage", "last_seen"),
+		"Last time the service was seen by OpenStack",
+		[]string{"binary", "service_host", "zone"}, nil,
+	)
 )
 
 func init() {
@@ -68,6 +73,7 @@ func (c blockstorageCollector) Update(ch chan<- prometheus.Metric) error {
 			}
 			ch <- prometheus.MustNewConstMetric(blockstorageUpDesc, prometheus.GaugeValue, state, service.Binary, service.Host, service.Zone)
 			ch <- prometheus.MustNewConstMetric(blockstorageEnabledDesc, prometheus.GaugeValue, enabled, service.Binary, service.Host, service.Zone)
+			ch <- prometheus.MustNewConstMetric(blockstorageLastSeenDesc, prometheus.CounterValue, float64(service.Updated.Unix()), service.Binary, service.Host, service.Zone)
 		}
 
 		return true, nil

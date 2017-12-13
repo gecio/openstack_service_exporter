@@ -28,12 +28,20 @@ func TestComputeUpdate(t *testing.T) {
 			want: prometheus.MustNewConstMetric(computeEnabledDesc, prometheus.GaugeValue, 1, "10", "nova-compute", "DE-IX-001-02-02-09-2", "ix1"),
 		},
 		{
+			desc: "1. Last Seen (of up and enabled)",
+			want: prometheus.MustNewConstMetric(computeLastSeenDesc, prometheus.CounterValue, 1507554374, "10", "nova-compute", "DE-IX-001-02-02-09-2", "ix1"),
+		},
+		{
 			desc: "2. Down (of down and enabled)",
 			want: prometheus.MustNewConstMetric(computeUpDesc, prometheus.GaugeValue, 0, "185", "nova-conductor", "DE-IX-001-02-02-01-1", "internal"),
 		},
 		{
 			desc: "2. Enabled (of down and enabled)",
 			want: prometheus.MustNewConstMetric(computeEnabledDesc, prometheus.GaugeValue, 1, "185", "nova-conductor", "DE-IX-001-02-02-01-1", "internal"),
+		},
+		{
+			desc: "2. Last Seen (of down and enabled)",
+			want: prometheus.MustNewConstMetric(computeLastSeenDesc, prometheus.CounterValue, 1507554376, "185", "nova-conductor", "DE-IX-001-02-02-01-1", "internal"),
 		},
 		{
 			desc: "3. Down (of down and disabled)",
@@ -43,6 +51,10 @@ func TestComputeUpdate(t *testing.T) {
 		{
 			desc: "3. Disabled (of down and disabled)",
 			want: prometheus.MustNewConstMetric(computeEnabledDesc, prometheus.GaugeValue, 0, "210", "nova-consoleauth", "DE-ES-001-03-09-01-3", "internal"),
+		},
+		{
+			desc: "3. Last Seen (of down and disabled)",
+			want: prometheus.MustNewConstMetric(computeLastSeenDesc, prometheus.CounterValue, 1507554377, "210", "nova-consoleauth", "DE-ES-001-03-09-01-3", "internal"),
 		},
 	}
 

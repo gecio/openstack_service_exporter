@@ -28,12 +28,20 @@ func TestBlockstorageUpdate(t *testing.T) {
 			want: prometheus.MustNewConstMetric(blockstorageEnabledDesc, prometheus.GaugeValue, 1, "cinder-scheduler", "DE-IX-001-02-02-01-1", "nova"),
 		},
 		{
+			desc: "1. Last Seen (of up and enabled)",
+			want: prometheus.MustNewConstMetric(blockstorageLastSeenDesc, prometheus.CounterValue, 1507557213, "cinder-scheduler", "DE-IX-001-02-02-01-1", "nova"),
+		},
+		{
 			desc: "2. Down (of down and enabled)",
 			want: prometheus.MustNewConstMetric(blockstorageUpDesc, prometheus.GaugeValue, 0, "cinder-scheduler", "DE-IX-001-02-02-01-2", "nova"),
 		},
 		{
 			desc: "2. Enabled (of down and enabled)",
 			want: prometheus.MustNewConstMetric(blockstorageEnabledDesc, prometheus.GaugeValue, 1, "cinder-scheduler", "DE-IX-001-02-02-01-2", "nova"),
+		},
+		{
+			desc: "2. Last Seen (of down and enabled)",
+			want: prometheus.MustNewConstMetric(blockstorageLastSeenDesc, prometheus.CounterValue, 1507557213, "cinder-scheduler", "DE-IX-001-02-02-01-2", "nova"),
 		},
 		{
 			desc: "3. Up (of up and disabled)",
@@ -44,12 +52,20 @@ func TestBlockstorageUpdate(t *testing.T) {
 			want: prometheus.MustNewConstMetric(blockstorageEnabledDesc, prometheus.GaugeValue, 0, "cinder-scheduler", "DE-ES-001-02-02-01-3", "nova"),
 		},
 		{
+			desc: "3. Last Seen (of up and disabled)",
+			want: prometheus.MustNewConstMetric(blockstorageLastSeenDesc, prometheus.CounterValue, 1507557208, "cinder-scheduler", "DE-ES-001-02-02-01-3", "nova"),
+		},
+		{
 			desc: "4. Down (of down and disabled)",
 			want: prometheus.MustNewConstMetric(blockstorageUpDesc, prometheus.GaugeValue, 0, "cinder-scheduler", "DE-ES-001-02-02-01-4", "nova"),
 		},
 		{
 			desc: "4. Disabled (of down and disabled)",
 			want: prometheus.MustNewConstMetric(blockstorageEnabledDesc, prometheus.GaugeValue, 0, "cinder-scheduler", "DE-ES-001-02-02-01-4", "nova"),
+		},
+		{
+			desc: "4. Last Seen (of down and disabled)",
+			want: prometheus.MustNewConstMetric(blockstorageLastSeenDesc, prometheus.CounterValue, 1507557208, "cinder-scheduler", "DE-ES-001-02-02-01-4", "nova"),
 		},
 	}
 

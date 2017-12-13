@@ -28,12 +28,20 @@ func TestNetworkUpdate(t *testing.T) {
 			want: prometheus.MustNewConstMetric(networkEnabledDesc, prometheus.GaugeValue, 1, "02306fa8-d790-4272-8e2f-c3a52c8e9f15", "neutron-openvswitch-agent", "DE-IX-001-02-02-13-1", "", "Open vSwitch agent", "N/A"),
 		},
 		{
+			desc: "1. Last Seen (of up and enabled)",
+			want: prometheus.MustNewConstMetric(networkLastSeenDesc, prometheus.CounterValue, 1507555493, "02306fa8-d790-4272-8e2f-c3a52c8e9f15", "neutron-openvswitch-agent", "DE-IX-001-02-02-13-1", "", "Open vSwitch agent", "N/A"),
+		},
+		{
 			desc: "2. Down (of down and enabled)",
 			want: prometheus.MustNewConstMetric(networkUpDesc, prometheus.GaugeValue, 0, "0b4d3a07-b680-40da-88a3-8de99fd34100", "neutron-metadata-agent", "DE-IX-001-02-02-13-2", "", "Metadata agent", "N/A"),
 		},
 		{
 			desc: "2. Enabled (of down and enabled)",
 			want: prometheus.MustNewConstMetric(networkEnabledDesc, prometheus.GaugeValue, 1, "0b4d3a07-b680-40da-88a3-8de99fd34100", "neutron-metadata-agent", "DE-IX-001-02-02-13-2", "", "Metadata agent", "N/A"),
+		},
+		{
+			desc: "2. Last Seen (of down and enabled)",
+			want: prometheus.MustNewConstMetric(networkLastSeenDesc, prometheus.CounterValue, 1507555512, "0b4d3a07-b680-40da-88a3-8de99fd34100", "neutron-metadata-agent", "DE-IX-001-02-02-13-2", "", "Metadata agent", "N/A"),
 		},
 		{
 			desc: "3. Up (of up and disabled)",
@@ -44,12 +52,20 @@ func TestNetworkUpdate(t *testing.T) {
 			want: prometheus.MustNewConstMetric(networkEnabledDesc, prometheus.GaugeValue, 0, "0b4d3a07-b680-40da-88a3-8de99fd34100", "neutron-l3-agent", "DE-IX-001-02-02-13-3", "", "L3 agent", "N/A"),
 		},
 		{
+			desc: "3. Last Seen (of up and disabled)",
+			want: prometheus.MustNewConstMetric(networkLastSeenDesc, prometheus.CounterValue, 1507555512, "0b4d3a07-b680-40da-88a3-8de99fd34100", "neutron-l3-agent", "DE-IX-001-02-02-13-3", "", "L3 agent", "N/A"),
+		},
+		{
 			desc: "4. Down (of down and disabled)",
 			want: prometheus.MustNewConstMetric(networkUpDesc, prometheus.GaugeValue, 0, "0b4d3a07-b680-40da-88a3-8de99fd34100", "neutron-dhcp-agent", "DE-IX-001-02-02-13-4", "", "DHCP agent", "N/A"),
 		},
 		{
 			desc: "4. Disabled (of down and disabled)",
 			want: prometheus.MustNewConstMetric(networkEnabledDesc, prometheus.GaugeValue, 0, "0b4d3a07-b680-40da-88a3-8de99fd34100", "neutron-dhcp-agent", "DE-IX-001-02-02-13-4", "", "DHCP agent", "N/A"),
+		},
+		{
+			desc: "4. Last Seen (of down and disabled)",
+			want: prometheus.MustNewConstMetric(networkLastSeenDesc, prometheus.CounterValue, 1507555512, "0b4d3a07-b680-40da-88a3-8de99fd34100", "neutron-dhcp-agent", "DE-IX-001-02-02-13-4", "", "DHCP agent", "N/A"),
 		},
 	}
 
@@ -70,7 +86,7 @@ func TestNetworkUpdate(t *testing.T) {
 		t.Run(fmt.Sprintf("[%d] %s", idx, tt.desc), func(t *testing.T) {
 			err := verifyMetric(ch, tt.want)
 			if err != nil {
-				t.Errorf("%v", err)
+				t.Errorf("%s: %v", tt.desc, err)
 			}
 		})
 	}

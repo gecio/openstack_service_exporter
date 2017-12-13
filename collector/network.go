@@ -21,6 +21,11 @@ var (
 		"State of network agents",
 		[]string{"id", "binary", "service_host", "zone", "agent_type", "topic"}, nil,
 	)
+	networkLastSeenDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "network", "last_seen"),
+		"Last time the service was seen by OpenStack",
+		[]string{"id", "binary", "service_host", "zone", "agent_type", "topic"}, nil,
+	)
 )
 
 func init() {
@@ -44,7 +49,7 @@ func (c networkCollector) Describe(ch chan<- *prometheus.Desc) {
 }
 
 func (c networkCollector) Update(ch chan<- prometheus.Metric) error {
-	pager := agents.List(c.client)
+	pager := agents.List(c.client, nil)
 	if pager.Err != nil {
 		return fmt.Errorf("Unable to get data: %v", pager.Err)
 	}
@@ -65,8 +70,10 @@ func (c networkCollector) Update(ch chan<- prometheus.Metric) error {
 			if agent.AdminStateUp {
 				enabled = 1
 			}
+
 			ch <- prometheus.MustNewConstMetric(networkUpDesc, prometheus.GaugeValue, state, agent.ID, agent.Binary, agent.Host, agent.AvailabilityZone, agent.AgentType, agent.Topic)
 			ch <- prometheus.MustNewConstMetric(networkEnabledDesc, prometheus.GaugeValue, enabled, agent.ID, agent.Binary, agent.Host, agent.AvailabilityZone, agent.AgentType, agent.Topic)
+			ch <- prometheus.MustNewConstMetric(networkLastSeenDesc, prometheus.CounterValue, float64(agent.Heartbeat.Unix()), agent.ID, agent.Binary, agent.Host, agent.AvailabilityZone, agent.AgentType, agent.Topic)
 		}
 
 		return true, nil
