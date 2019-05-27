@@ -5,8 +5,8 @@ import (
 
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
+	"github.com/gophercloud/gophercloud/openstack/blockstorage/extensions/services"
 	"github.com/gophercloud/gophercloud/pagination"
-	"github.com/innovocloud/gophercloud_extensions/openstack/blockstorage/v2/services"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -50,18 +50,18 @@ func (c blockstorageCollector) Describe(ch chan<- *prometheus.Desc) {
 }
 
 func (c blockstorageCollector) Update(ch chan<- prometheus.Metric) error {
-	pager := services.List(c.client)
+	pager := services.List(c.client, services.ListOpts{})
 	if pager.Err != nil {
 		return fmt.Errorf("Unable to get data: %v", pager.Err)
 	}
 
 	err := pager.EachPage(func(page pagination.Page) (bool, error) {
-		services, err := services.ExtractServices(page)
+		svcs, err := services.ExtractServices(page)
 		if err != nil {
 			return false, err
 		}
 
-		for _, service := range services {
+		for _, service := range svcs {
 			var state float64
 			var enabled float64
 			if service.State == "up" {
@@ -73,7 +73,7 @@ func (c blockstorageCollector) Update(ch chan<- prometheus.Metric) error {
 			}
 			ch <- prometheus.MustNewConstMetric(blockstorageUpDesc, prometheus.GaugeValue, state, service.Binary, service.Host, service.Zone)
 			ch <- prometheus.MustNewConstMetric(blockstorageEnabledDesc, prometheus.GaugeValue, enabled, service.Binary, service.Host, service.Zone)
-			ch <- prometheus.MustNewConstMetric(blockstorageLastSeenDesc, prometheus.CounterValue, float64(service.Updated.Unix()), service.Binary, service.Host, service.Zone)
+			ch <- prometheus.MustNewConstMetric(blockstorageLastSeenDesc, prometheus.CounterValue, float64(service.UpdatedAt.Unix()), service.Binary, service.Host, service.Zone)
 		}
 
 		return true, nil

@@ -67,7 +67,6 @@ func main() {
 	enableBlockstorage := flag.Bool("collector.blockstorage", true, "Enable collector for blockstorage services.")
 	enableCompute := flag.Bool("collector.compute", true, "Enable collector for compute services.")
 	enableNetwork := flag.Bool("collector.network", true, "Enable collector for network agents.")
-	enableOrchestration := flag.Bool("collector.orchestration", false, "Enable collector for orchestration services.")
 
 	flag.Parse()
 
@@ -75,16 +74,23 @@ func main() {
 		printVersion(os.Stdout)
 		os.Exit(0)
 	}
-	endpointOpts := gophercloud.EndpointOpts{Region: *region}
+
+	// Flag has priority over environment variable
+	regionEnv := os.Getenv("OS_REGION_NAME")
+	if *region != "" {
+		regionEnv = *region
+	}
+	endpointOpts := gophercloud.EndpointOpts{Region: regionEnv}
 
 	endpointTypeEnv := os.Getenv("OS_INTERFACE")
-	if endpointTypeEnv == "" {
-		endpointTypeEnv = "public"
-	}
-	if *endpointType != "public" {
+	if *endpointType != "" {
 		endpointTypeEnv = *endpointType
 	}
+
 	switch endpointTypeEnv {
+	case "":
+		// If no endpointType is specified we use public
+		endpointOpts.Availability = gophercloud.AvailabilityPublic
 	case "admin":
 		endpointOpts.Availability = gophercloud.AvailabilityAdmin
 	case "public":
@@ -104,9 +110,6 @@ func main() {
 	}
 	if *enableNetwork {
 		collectors = append(collectors, "network")
-	}
-	if *enableOrchestration {
-		collectors = append(collectors, "orchestration")
 	}
 	if len(collectors) == 0 {
 		log.Fatalf("No collector enabled. Bailing out.")

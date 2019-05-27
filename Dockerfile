@@ -1,5 +1,6 @@
 FROM golang:latest as builder
 
+ENV GO111MODULE on
 WORKDIR /go/src/github.com/innovocloud/openstack_service_exporter
 COPY . /go/src/github.com/innovocloud/openstack_service_exporter
 RUN make binary
