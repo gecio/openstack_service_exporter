@@ -93,7 +93,7 @@ func TestBlockstorageUpdate(t *testing.T) {
 
 	// drain the channel
 	res := 0
-	for _ = range ch {
+	for range ch {
 		res++
 	}
 	if res > 0 {

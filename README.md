@@ -7,7 +7,6 @@ Currently implemented equivalents:
 * `openstack volume service list`
 * `openstack compute service list`
 * `openstack network agent list`
-* `openstack orchestration service list` (disabled by default, use `-collector.orchestration` to enable)
 
 
 You need to pass OpenStack auth environment variables (see `openrc`).
